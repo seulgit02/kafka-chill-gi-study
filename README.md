@@ -34,18 +34,24 @@
   </tr>
   <!-- BE -->
   <tr>
+    <th colspan="7" align="center" style="background-color: #f0f0f0; padding: 10px;">Backend Engineer</th>
+  </tr>
+  <tr>
+    <td align="center" style="padding: 10px; width: 20%;">
+      <img src="https://avatars.githubusercontent.com/u/46413809?v=4" width="100px;" alt=""/><br /><sub><b><a href="https://github.com/97tkddnjs">이상원</a></b></sub>
+    </td>
+  </tr>
+  <!-- ML -->
+  <tr>
     <th colspan="7" align="center" style="background-color: #f0f0f0; padding: 10px;">Machine Learning Engineer</th>
   </tr>
   <tr>
     <td align="center" style="padding: 10px; width: 20%;">
       <img src="https://avatars.githubusercontent.com/u/52999093?v=4" width="100px;" alt=""/><br /><sub><b><a href="https://github.com/falconlee236">이상윤</a></b></sub>
     </td>
-    <td align="center" style="padding: 10px; width: 20%;">
-      <img src="https://avatars.githubusercontent.com/u/46413809?v=4" width="100px;" alt=""/><br /><sub><b><a href="https://github.com/97tkddnjs">이상원</a></b></sub>
-    </td>
   </tr>
 
-  <!-- ML -->
+  <!-- student -->
   <tr>
     <th colspan="7" align="center" style="background-color: #f0f0f0; padding: 10px;">CS/CE student</th>
   </tr>
