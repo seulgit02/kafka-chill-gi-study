@@ -71,8 +71,110 @@ ___
 - `스트림`이라는 용어는 카프카에서 파티션 수에 관계없이 단일 데이터 토픽으로 간주함
 - pub to sub으로 이동하는 단일 스트림은 하둡과같이 대량 데이터에서 작동하도록 설계된 방식과 비교할 수 있음
 <p align="center"><img width="558" alt="image" src="https://github.com/user-attachments/assets/aa61721f-d290-41d2-9d5a-5e33aa236cf7" /></p>
+___
+
+### Producers and Consumers
+
+카프카 클라이언트는 두 가지: producers and consumers (producer와 consumer를 기본요소로 사용하는 advanced client로 카프카 커넥트 API와 카프카 스트림 등이 있음)
+
+- Producer는 메시지를 생성하는 사람으로 publisher 혹은 writer
+  - 메시지는 하나의 토픽으로 생성되며, producer는 토픽의 파티션에 메시지를 균등 분산하고자 함 (해싱을 이용한 파티션 분산 -> 키 충돌에 의한 쏠림이 발생할 수 있으며 RR 방식도 있다고 한다.)
+- Consumer는 메시지를 읽는 사람으로 subscriber 혹은 reader
+  - Consumer는 하나 이상의 토픽을 subscribe하고, 각 파티션에 생성된 토픽은 순서대로 읽는다 -> 순서대로 읽기위해 Offset을 가지며, offset을 통해 순서를 지켜 읽을 수 있고, 장애 시에도 끊긴 부분부터 읽을 수 있다.
+- Consumer는 토픽을 함께 처리하기 위해 consumer group으로 작동하기도 함
+  - 많은 메시지가 있는 토픽을 소비하기 위해서 consumer group에 consumer를 수평적으로 확장할 수 있음
+  - consumer group의 consumer가 파티션에서 작업 중이면 다른 consumer는 접근하지 못하고 이를 ownership of the partition by the consumer 이라고 함. (파티션 소유권)
+  - 파티션에서 작업 중이던 consumer가 장애로 인해 실패하게 되면 다른 consumer에 파티션을 재할당하여 처리
+___
+
+### Brokers and Clusters
+
+단일 카프카 서버를 Broker라고 부른다.
+- 브로커는 producer한테 메시지를 받아 오프셋 할당 및 디스크에 write
+- consumer에게 서비스 형태로 파티션에 대한 요청을 응답
+- 단일 브로커는 H/W 성능에 따라 수천개 파티션과 초당 수백만개 메시지를 쉽게 처리할 수 있음
+
+클러스터 환경에서 하나의 브로커는 클러스터 컨트롤러로 작동
+- 컨트롤러가 브로커에 파티션을 할당하고 장애를 모니터링 하는 등의 작업을 함
+- 파티션은 브로커에 할당되며 이를 리더 브로커라하고, 파티션을 복제하여 유지하는 팔로워 브로커가 존재함
+  - 복제하여 파티션의 메세지 중복 저장
+  - 리더 브로커에 장애가 발생 시, 팔로워 중 하나가 리더 역할 이어 받음
+  - 모든 producer는 리더 브로커에 메세지를 발행해야하지만, consumer는 리더나 팔로워 중 하나로 데이터 읽기가 가능
+
+<p align="center"><img width="886" alt="image" src="https://github.com/user-attachments/assets/72d1f2b7-ca9b-44b9-9b95-ad02e5033872" /></p>
+___
+
+### Multiple Clusters
+여러 방식의 클러스터 운영
+
+- Segregation of types of data
+- Isolation for security requirements
+- Multiple datacenters (disaster recovery)
+  - [토스증권 Apache Kafka 데이터센터 이중화 구성](https://toss.tech/article/kafka-distribution-1)
+___
+
+### Multiple Producers
+
+- 여러 Producer가 동일한 토픽을 보내든, 다른 토픽을 보내든 Consumer는 각 Producer에 따라 다른 방식을 조정할 필요없이 수신할 수 있음
+___
+
+### Multiple Consumers
+
+- 다른 consumer가 메시지를 소비하고있으면 사용할 수 없는 다른 큐 시스템과 다르게 Multiple Kafka consumer는 group으로도 작동하고, 스트림을 공유할 수도 있다.
+___
+
+### Disk-Based Retention
+
+카프카는 지속적인 메시지 보존으로 항상 실시간으로 작동할 필요가 없음
+- 메시지는 디스크에 저장되며, consumer가 느린 처리와 트래픽 문제로 인한 데이터 손실 위험이 없음
+- consumer는 작업이 중단되어도 메시지는 카프카에 보존되어 이어서 작업이 가능
 
 ___
 
-###
+### Scalable
+카프카의 유연한 확장성은 모든 양의 데이터를 쉽게 처리할 수 있다.
 
+사용자는 단일 브로커로 시작하여, 3개의 브로커로 구성된 클러스터로 확장하고, 데이터가 확장됨에 따라 시간이 지남에 따라 성장하는 수십 또는 수백 개의 브로커로 구성된 더 큰 프로덕션 클러스터로 이동할 수 있음
+
+클러스터의 확장도 온라인에서 가능하고, 여러 브로커로 구성된 클러스터가 개별 브로커의 실패를 처리하고 클라이언트에게 계속 서비스를 제공할 수 있음
+
+- 더 많은 동시 실패를 대비하기 위해선 더 많은 복제 요소를 구성해야 함
+___
+
+### Platform Features
+스트리밍 플랫폼 기능
+- `카프카 커넥트`는 소스 데이터 시스템에서 데이터를 가져와 카프카로 푸시하거나, 카프카에서 데이터를 가져와 싱크 데이터 시스템으로 푸시하는 작업을 지원
+- `카프카 스트림`은 확장 가능하고 오류에 강한 스트림 처리 애플리케이션을 쉽게 개발할 수 있는 라이브러리를 제공
+___
+
+### The Data Ecosystem
+많은 애플리케이션이 데이터 처리를 위해 구축하는 환경
+- Activity tracking
+  - 페이지 조회 및 클릭 추적과 같은 수동적인 정보, 사용자가 자신의 프로필에 추가하는 정보와 같은 더 복잡한 작업 등의 활동 추적
+  - 보고서를 생성하거나, 머신 러닝 시스템에 공급하거나, 검색 결과를 업데이트하는데 사용됨
+- Messaging
+  - 애플리케이션이 사용자에게 알림(이메일)을 보내야 하는 메시징에도 사용 
+- Metrics and logging
+  - 시스템 측정 지표와 로그를 수집
+  - 모니터링 및 경고를 위한 시스템에서 소비
+  - 모니터링하는 대상 시스템의 업데이트가 발생해도, 로그를 수집하는 front에선 변경할 것이 없음 (format 유지)
+- Commit log
+  - 데이터베이스 변경 사항을 카프카에 published
+  - 변경 로그를 보존하여 장애 시 재수행할 수 있도록함
+- Stream processing
+  - 스트림 처리는 메시지가 생성되는 즉시 실시간으로 데이터에 대해 작동
+  - 측정 지표 계산, 다른 애플리케이션의 효율적인 처리를 위한 메시지 분할 또는 여러 소스의 데이터를 사용하여 메시지 변환과 같은 작업을 수행
+
+___
+
+### The Birth of Kafka
+
+카프카의 주요 목표
+- Decouple producers and consumers by using a push-pull model
+- Provide persistence for message data within the messaging system to allow multiple consumers
+- Allow for horizontal scaling of the system to grow as the data streams grew
+- Optimize for high throughput of messages
+
+___
+
+## CHAPTER 3. Kafka Producers: Writing Messages to Kafka
