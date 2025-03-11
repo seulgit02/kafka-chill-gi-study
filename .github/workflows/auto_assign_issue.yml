@@ -25,7 +25,7 @@ jobs:
       - name: 'Auto-assign Issue'
         uses: pozil/auto-assign-issue@v2.2.0
         with:
-          assignees: ${{ env.COLLABORATORS }}
+          assignees: kyungjunleeme, Jake-huen, ParkGyeongTae, dpwns523, juanxiu, seulgit02, jang-namu, na3150, chaewonni, falconlee236, 97tkddnjs
           numOfAssignee: 2
           allowSelfAssign: false
   
