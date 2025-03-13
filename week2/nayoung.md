@@ -1,6 +1,52 @@
 # 1주차
 
-범위: 1-3장
+범위: 1-3장 + 인프런 강의(카프카 완벽 가이드 - 코어편)
+
+## 목차
+
+### Ch1. Kafka 시작하기
+- [🌳 Kafka란 무엇인가?](#-kafka란-무엇인가)
+- [🌳 Kafka의 주요 개념](#-kafka의-주요-개념)
+- [🌳 Kafka의 주요 특징 및 장점](#-kafka의-주요-특징-및-장점)
+- [🌳 Kafka의 역사](#-kafka의-역사)
+
+### Ch2. Kafka 설치하기
+- [🌳 Broker 구성하기](#-broker-구성하기)
+- [🌳 Topic 기본 설정(default)](#-topic-기본-설정default)
+- [🌳 하드웨어 선택하기](#-하드웨어-선택하기)
+- [🌳 Kafka Cluster 구성](#-kafka-cluster-구성)
+- [🌳 프로덕션 환경 고려사항](#-프로덕션-환경-고려사항)
+
+### Ch3. Kafka Producer: 카프카에 메시지 쓰기
+- [🌳 프로듀서 개요](#-프로듀서-개요)
+- [🌳 프로듀서 기본 구조](#-프로듀서-기본-구조)
+- [🌳 필수 설정](#-필수-설정)
+- [🌳 메시지 전송 방식](#-메시지-전송-방식)
+- [🌳 주요 프로듀서 설정](#-주요-프로듀서-설정)
+- [🌳 시리얼라이저와 스키마](#-시리얼라이저와-스키마)
+- [🌳 파티션과 접착성 처리](#-파티션과-접착성-처리)
+- [🌳 레코드 헤더](#-레코드-헤더)
+- [🌳 인터셉터](#-인터셉터)
+- [🌳 쿼터 및 쓰로틀링](#-쿼터-및-쓰로틀링)
+
+### 카프카 완벽 가이드 - 코어편
+- [🍅 Kafka 소개, 그리고 왜 Kafka를 배워야 하는가?](#-kafka-소개-그리고-왜-kafka를-배워야-하는가)
+- [🍅 Kafka 실습 환경 구축](#-kafka-실습-환경-구축)
+- [🍅 Kafka 설치 Binary 개요](#-kafka-설치-binary-개요)
+- [🍅 Oracle Virtualbox 설치](#-oracle-virtualbox-설치)
+- [🍅 Kafka 설치하기](#-kafka-설치하기)
+- [🍅 Kafka 구성하기](#-kafka-구성하기)
+- [🍅 Topic 생성하기](#-topic-생성하기)
+- [🍅 Topic 생성 및 정보 확인하기](#-topic-생성-및-정보-확인하기)
+- [🍅 kafka-console-producer와 kafka-console-consumer로 Producer와 Consumer 실습](#-kafka-console-producer와-kafka-console-consumer로-producer와-consumer-실습)
+- [🍅 Producer의 객체 직렬화(Serializer) 전송의 이해](#-producer의-객체-직렬화serializer-전송의-이해)
+- [🍅 Key 값을 가지지 않는 메시지 전송](#-key-값을-가지지-않는-메시지-전송)
+- [🍅 Key 값을 가지는 메시지 전송](#-key-값을-가지는-메시지-전송)
+- [🍅 여러 개의 파티션을 가지는 메시지 전송 실습](#-여러-개의-파티션을-가지는-메시지-전송-실습)
+- [🍅 Kafka Producer의 send() 메소드 호출 프로세스](#-kafka-producer의-send-메소드-호출-프로세스)
+- [🍅 key 값을 가지지 않는 메시지 전송 시 파티션 분배 전략 - Sticky 파티셔닝](#-key-값을-가지지-않는-메시지-전송-시-파티션-분배-전략---sticky-파티셔닝)
+
+<br> <br>
 
 # Ch1. Kafka 시작하기
 
